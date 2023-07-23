@@ -1,0 +1,41 @@
+{
+  "name": "grpc-test",
+  "version": "0.0.1",
+  "description": "Playing around with gRPC",
+  "author": "Pablo Silió Polanco",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pablopsp/gRPC-test.git"
+  },
+  "keywords": [
+    "grpc",
+    "grpc-nodejs",
+    "typescript",
+    "node.js"
+  ],
+  "scripts": {
+    "build:protos": "npx ts-node ./scripts/compileProtos.ts",
+    "build:fix-protos": "npx ts-node ./scripts/fixCompiledProtosImports.ts",
+    "build:src": "rimraf ./dist && swc src -d dist",
+    "build": "rimraf ./dist && npm run build:protos && npm run build:fix-protos && npm run build:src",
+    "ms-wallet": "node dist/ms-wallet/index.js",
+    "ms-main": "node dist/ms-main/index.js",
+    "start": "conc \"npm run ms-wallet\" \"npm run ms-main\"",
+    "dev": "npm run build && npm run start"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.8.15",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.70",
+    "@types/express": "^4.17.17",
+    "concurrently": "^8.2.0",
+    "grpc_tools_node_protoc_ts": "^5.3.3",
+    "grpc-tools": "^1.12.4",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6"
+  }
+}
