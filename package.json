@@ -21,7 +21,7 @@
     "build": "rimraf ./dist && npm run build:protos && npm run build:fix-protos && npm run build:src",
     "ms-wallet": "node dist/ms-wallet/index.js",
     "ms-main": "node dist/ms-main/index.js",
-    "start": "conc \"npm run ms-wallet\" \"npm run ms-main\"",
+    "start": "conc -k -n WALLET,MAIN -c bgYellow.bold,bgBlue.bold \"npm run ms-wallet\" \"npm run ms-main\"",
     "dev": "npm run build && npm run start"
   },
   "dependencies": {
