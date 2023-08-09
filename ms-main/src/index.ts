@@ -15,7 +15,7 @@ import {
 } from "@/protos/wallet_pb";
 
 const walletClient = new WalletClient(
-  "localhost:50051",
+  "wallet:50001",
   credentials.createInsecure()
 );
 
@@ -81,7 +81,7 @@ app.post(
   }
 );
 
-const port = 5000;
-app.listen(port, () => {
-  console.log(`RESTful API is listening on port ${port}`);
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`RESTful API is listening on port ${PORT}`);
 });

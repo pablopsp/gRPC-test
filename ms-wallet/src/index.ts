@@ -98,7 +98,7 @@ server.addService(WalletService, {
   walletInfo,
 });
 server.bindAsync(
-  "localhost:50051",
+  "0.0.0.0:50001",
   ServerCredentials.createInsecure(),
   (err, port) => {
     if (err) console.log(err);

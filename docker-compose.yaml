@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  main:
+    container_name: main
+    build:
+      context: ms-main
+      dockerfile: Dockerfile
+    volumes:
+      - ./ms-main/src:/ms-main/src
+    ports:
+      - 5000:5000
+    depends_on:
+      - wallet
+
+  wallet:
+    container_name: wallet
+    build:
+      context: ms-wallet
+      dockerfile: Dockerfile
+    volumes:
+      - ./ms-wallet/src:/ms-wallet/src
+    ports:
+      - 50001:50001

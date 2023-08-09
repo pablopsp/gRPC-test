@@ -1,35 +1,40 @@
+import { glob } from "glob";
 import { join, resolve } from "path";
 import { readdirSync, statSync, readFileSync, writeFileSync } from "fs";
 
-const cwd = process.cwd();
-const compiledProtosFolder = resolve(cwd, "src/protos");
+const msFolders = glob.sync("ms-*");
 
-console.log("Rewriting *_grpc_pb.d.ts grpc import");
+msFolders.forEach((msFolder) => {
+  const cwd = process.cwd();
+  const compiledProtosFolder = resolve(cwd, `${msFolder}/src/protos`);
 
-readdirSync(compiledProtosFolder).forEach((file) => {
-  const filePath = join(compiledProtosFolder, file);
+  console.log("Rewriting *_grpc_pb.d.ts grpc import");
 
-  if (statSync(filePath).isFile()) {
-    if (/_grpc_pb\.d\.ts$/.test(file)) {
-      const content = readFileSync(filePath, "utf8");
-      const updatedContent = content.replace(
-        /import \* as grpc from "grpc";/g,
-        'import * as grpc from "@grpc/grpc-js";'
-      );
+  readdirSync(compiledProtosFolder).forEach((file) => {
+    const filePath = join(compiledProtosFolder, file);
 
-      writeFileSync(filePath, updatedContent, "utf8");
-      console.log(`Updated: ${filePath}`);
+    if (statSync(filePath).isFile()) {
+      if (/_grpc_pb\.d\.ts$/.test(file)) {
+        const content = readFileSync(filePath, "utf8");
+        const updatedContent = content.replace(
+          /import \* as grpc from "grpc";/g,
+          'import * as grpc from "@grpc/grpc-js";'
+        );
+
+        writeFileSync(filePath, updatedContent, "utf8");
+        console.log(`Updated: ${filePath}`);
+      }
+
+      if (/_grpc_pb\.js$/.test(file)) {
+        const content = readFileSync(filePath, "utf8");
+        const updatedContent = content.replace(
+          /var grpc = require\('grpc'\);/g,
+          "var grpc = require('@grpc/grpc-js');"
+        );
+
+        writeFileSync(filePath, updatedContent, "utf8");
+        console.log(`Updated: ${filePath}`);
+      }
     }
-
-    if (/_grpc_pb\.js$/.test(file)) {
-      const content = readFileSync(filePath, "utf8");
-      const updatedContent = content.replace(
-        /var grpc = require\('grpc'\);/g,
-        "var grpc = require('@grpc/grpc-js');"
-      );
-
-      writeFileSync(filePath, updatedContent, "utf8");
-      console.log(`Updated: ${filePath}`);
-    }
-  }
+  });
 });

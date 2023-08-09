@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/protos/*": ["protos/*"]
+    }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "**/node_modules", "dist"]
+}
